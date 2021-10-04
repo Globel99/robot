@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RobotKar</title>
+    <link rel="icon" type="image/png" href="./icon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="flex-center button-container" id="buttonContainer">
+        <button id="connectButton" onclick="connect()">KAPCSOLÓDÁS AZ USB PORTRA</button>
+    </div>
+
+    <div class="inputs">
+        <div>
+            <label for="motor1">1</label>
+            <input name="motor1" id="motor1" type="range" min="30" max="150" disabled oninput="onRangeChange(1, event)">
+        </div>
+
+        <div>
+            <label for="motor2">2</label>
+            <input name="motor2" id="motor2" type="range" min="30" max="150" disabled oninput="onRangeChange(2, event)">
+        </div>
+
+        <div>
+            <label for="motor3">3</label>
+            <input name="motor3" id="motor3" type="range" min="30" max="150" disabled oninput="onRangeChange(3, event)">
+        </div>
+
+        <div>
+            <label for="motor4">4</label>
+            <input name="motor4" id="motor4" type="range" min="86" max="99" step="6.5" disabled oninput="onRangeChange(4, event)">
+        </div>
+    </div>
+
+    <div class="controller-overlay" id="controller-overlay">
+        <div class="overlay-message-container">
+            <div>
+                KONTROLLER CSATLAKOZTATVA
+            </div>
+            <img src='./gamepad-svg.svg'>
+        </div>
+    </div>
+
+    <div class="error" id="error">
+        <p>
+            Az Ön Böngészője nem támogatja a WEB Serial API-t
+            <br>
+            Váltson másik Böngészőre!
+            <br>
+            <br>
+            Támogatott Böngészők:
+            <br>
+            Google Chrome
+            <br>
+            Safari
+            <br>
+            Opera
+        </p>
+    </div>
+
+    <footer>
+        <p>
+            Kapitány Levente, Miskolci Egyetem, 2021
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
