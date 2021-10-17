@@ -1,3 +1,5 @@
+const baudRate = 19200
+
 port = null
 writer = null
 
@@ -5,8 +7,11 @@ gamepad = null
 buttonsCache = []
 buttonsDiff = []
 
-inputStream = null
-outputStream = null
+writer = null
+reader = null
+inputTextDecoder = new TextDecoderStream()
+
+readValueFull = ""
 
 if ("serial" in window.navigator) {
 
@@ -43,7 +48,7 @@ async function connect(){
 
 async function selectPort() {
     port = await navigator.serial.requestPort();
-    await port.open({ baudRate: 9600 });
+    await port.open({ baudRate: baudRate });
 
     setConnectedState()
 
@@ -52,11 +57,15 @@ async function selectPort() {
     console.log(outputDone)
     outputStream = encoder.writable;
     writer = outputStream.getWriter();
+
+    port.readable.pipeTo(inputTextDecoder.writable)
+    reader = inputTextDecoder.readable.getReader()
+
+    setInterval(readLoop, 100)
 }
 
 function onRangeChange(motor, event) {
-  sendValue(motor)
-  sendValue(event.target.value)
+  sendValue([String(motor), String(event.target.value), String(11)])
 }
 
 function setConnectedState() {
@@ -71,16 +80,14 @@ function setConnectedState() {
   inputs.forEach(input => input.disabled = false)
 }
 
-async function sendValue(value, closeMessage = true){
+async function sendValue(value, closeMessage = true) {
   console.log(value)
-  writer.write(new Uint8Array([value]))
-  
-  if(closeMessage) writer.write('x')
-}
+  writer.write(new Uint8Array(value))
 
-navigator.serial.addEventListener('connect', (e) => {
-  // Connect to `e.target` or add it to a list of available ports.
-});
+  updateConsole("outputConsole", value)
+
+  if (closeMessage) writer.write('x')
+}
 
 window.addEventListener("gamepadconnected", function(e) {
   console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
@@ -93,3 +100,25 @@ window.addEventListener("gamepadconnected", function(e) {
   document.getElementById('controller-overlay').style.display = 'block'
 }); 
 
+async function readLoop () {
+  const { value, done } = await reader.read();
+  if (done) {
+      reader.releaseLock();
+  }
+
+  readValueFull += value 
+
+  if(value[value.length - 1] === '\n')
+  {
+      console.log(readValueFull)
+      updateConsole("inputConsole", readValueFull)
+      readValueFull = ""
+  }
+}
+
+function updateConsole(consoleId, value) {
+  const console = document.getElementById(consoleId)
+  
+  console.innerText += value
+  if(consoleId == "outputConsole") console.innerHTML += '<br>'
+}

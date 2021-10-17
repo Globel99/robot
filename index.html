@@ -31,7 +31,32 @@
 
         <div>
             <label for="motor4">4</label>
-            <input name="motor4" id="motor4" type="range" min="86" max="99" step="6.5" disabled oninput="onRangeChange(4, event)">
+            <input name="motor4" id="motor4" type="range" min="30" max="150" disabled oninput="onRangeChange(4, event)">
+        </div>
+
+        <div>
+            <label for="motor5">5</label>
+            <input name="motor5" id="motor5" type="range" min="30" max="150" disabled oninput="onRangeChange(5, event)">
+        </div>
+
+        <div>
+            <label for="motor6">6</label>
+            <input name="motor6" id="motor6" type="range"  min="30" max="150" disabled oninput="onRangeChange(6, event)">
+        </div>
+    </div>
+
+    <div class="consoles">
+        <div class="console-container">
+            <div class="console-title">
+                Output (PC -> Microcontroller)
+            </div>
+            <div class="console" id="outputConsole"></div>
+        </div>
+        <div class="console-container">
+            <div class="console-title">
+                Input (PC <- Microcontroller)
+            </div>
+            <div class="console" id="inputConsole"></div>
         </div>
     </div>
 
