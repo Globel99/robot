@@ -69,12 +69,7 @@ function onRangeChange(motor, event) {
 }
 
 function setConnectedState() {
-  const connectButton = document.getElementById('connectButton');
-  connectButton.innerText = 'KAPCSOLÓDVA'
-  connectButton.disabled = true
-  connectButton.style.color = 'lightgrey'
-
-  document.getElementById('buttonContainer').style.height = '100px';
+  document.getElementById('buttonContainer').style.display = 'none';
 
   const inputs = document.querySelectorAll('input')
   inputs.forEach(input => input.disabled = false)
@@ -121,4 +116,9 @@ function updateConsole(consoleId, value) {
   
   console.innerText += value
   if(consoleId == "outputConsole") console.innerHTML += '<br>'
+}
+
+function clearConsole(consoleId) {
+  const console = document.getElementById(consoleId)
+  console.innerHTML = ''
 }
