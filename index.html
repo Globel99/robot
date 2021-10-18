@@ -45,6 +45,11 @@
         </div>
     </div>
 
+    <div>
+        <input type="text" id="inputField">
+        <button onclick="sendManualInput()">send</button>
+    </div>
+
     <div class="consoles">
         <div class="console-container">
             <div class="console-title">
@@ -60,6 +65,35 @@
             </div>
             <div class="console" id="inputConsole"></div>
         </div>
+    </div>
+
+    <div id="parallelInputs">
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+
+        <button onclick="sendParallelInputs()">Párhuzamos vezérlés indítás</button>
     </div>
 
     <div class="controller-overlay" id="controller-overlay">

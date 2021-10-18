@@ -65,7 +65,7 @@ async function selectPort() {
 }
 
 function onRangeChange(motor, event) {
-  sendValue([String(motor), String(event.target.value), String(11)])
+  sendSingleInput(motor, event.target.value);
 }
 
 function setConnectedState() {
@@ -75,13 +75,19 @@ function setConnectedState() {
   inputs.forEach(input => input.disabled = false)
 }
 
-async function sendValue(value, closeMessage = true) {
-  console.log(value)
-  writer.write(new Uint8Array(value))
+async function sendNumber(number) {
+  writer.write(new Uint8Array([number]))
+  closeSend(number)
+}
 
-  updateConsole("outputConsole", value)
+async function sendString(string) {
+  writer.write(string)
+  closeSend(string)
+}
 
-  if (closeMessage) writer.write('x')
+async function closeSend(message) {
+  writer.write('x')
+  updateConsole('outputConsole', message)
 }
 
 window.addEventListener("gamepadconnected", function(e) {
@@ -114,6 +120,7 @@ async function readLoop () {
 function updateConsole(consoleId, value) {
   const console = document.getElementById(consoleId)
   
+  if(console.innerText.length > 1000) console.innerText = console.innerText.slice(800);
   console.innerText += value
   if(consoleId == "outputConsole") console.innerHTML += '<br>'
 }
@@ -121,4 +128,28 @@ function updateConsole(consoleId, value) {
 function clearConsole(consoleId) {
   const console = document.getElementById(consoleId)
   console.innerHTML = ''
+}
+
+function sendManualInput() {
+  const message = document.getElementById('inputField').value
+  sendString(message)
+}
+
+function sendParallelInputs(){
+  const motors = document.getElementById('parallelInputs').querySelectorAll('div')
+
+  sendString('parallel')
+  motors.forEach(motor => {
+    const angle = motor.querySelectorAll('input')[0].value
+    const travel = motor.querySelectorAll('input')[1].value
+
+    sendNumber(angle)
+    sendNumber(travel)
+  })
+}
+
+function sendSingleInput(motor, target) {
+  sendString('single')
+  sendNumber(motor)
+  sendNumber(target)
 }
