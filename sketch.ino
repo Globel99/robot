@@ -16,14 +16,13 @@ int single_target;
 int motor_speed[c];
 int selected;
 
-int commandIs(const char *command);
-void debug(String label, int value, int end_line = 0);
+bool command_is(const char *command);
+void debug(String label, int value, bool end_line = true);
 
 void setup()
 {
     Serial.begin(19200);
 
-    //motorok pinhez rendelése
     motor[0].attach(11);
     motor[1].attach(10);
     motor[2].attach(9);
@@ -36,7 +35,7 @@ void loop()
 {
     if (Serial.available())
     {
-        if (commandIs("parallel"))
+        if (command_is("parallel"))
         {
             Serial.println("PARALLEL");
 
@@ -47,7 +46,7 @@ void loop()
 
                 debug("motor", m + 1);
                 debug("target", target[m]);
-                debug("speed", motor_speed[m], 1);
+                debug("speed", motor_speed[m], true);
             }
 
             for (int m = 0; m < 6; m++)
@@ -56,7 +55,7 @@ void loop()
                 if(delta == 0) 
                 {
                     enabled[m] = 0;
-                    debug("disabled motor", m, 1);
+                    debug("disabled motor", m, true);
                 }else
                 {
                     enabled[m] = 1;
@@ -70,9 +69,9 @@ void loop()
 
                     debug("motor", m + 1);
                     debug("travel t.", travel_time[m]);
-                    debug("delta", delta, 1);
+                    debug("delta", delta, true);
                     debug("sign", sign[m]);
-                    debug("delay", delay_time[m], 1);
+                    debug("delay", delay_time[m], true);
                 }
             }
 
@@ -93,7 +92,7 @@ void loop()
             }
         }
     
-        else if(commandIs("single"))
+        else if(command_is("single"))
         {
             Serial.println("PARALLEL");
 
@@ -104,24 +103,24 @@ void loop()
                 motor[selected].write(single_target);
 
                 debug("motor", selected);
-                debug("target", single_target, 1);
+                debug("target", single_target, true);
             }
         }
     }
 }
 
-int commandIs(const char *command)
+bool command_is(const char *command)
 {
     char serial_input[10] = "";
     Serial.readBytesUntil('x', serial_input, 10);
 
     if (strcmp(serial_input, command) == 0)
-        return 1;
+        return true;
     else
-        return 0;
+        return false;
 }
 
-void debug(String label, int value, int end_line = 0)
+void debug(String label, int value, bool end_line)
 {
     Serial.print(label);
     Serial.print(": ");
