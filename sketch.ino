@@ -4,7 +4,7 @@
 const int c = 6;
 Servo motor[c];
 
-int delta;
+int delta_s;
 int sign[c];
 int delay_time[c];
 int start_pos[c];
@@ -37,7 +37,7 @@ void loop()
     {
         if (command_is("parallel"))
         {
-            Serial.println("PARALLEL");
+            Serial.println("parallel");
 
             for (int m = 0; m < c; m++)
             {
@@ -49,10 +49,10 @@ void loop()
                 debug("speed", motor_speed[m], true);
             }
 
-            for (int m = 0; m < 6; m++)
+            for (int m = 0; m < c; m++)
             {
-                delta = target[m] - motor[m].read();
-                if(delta == 0) 
+                delta_s = target[m] - motor[m].read();
+                if(delta_s == 0) 
                 {
                     enabled[m] = 0;
                     debug("disabled motor", m, true);
@@ -60,33 +60,33 @@ void loop()
                 {
                     enabled[m] = 1;
 
-                    sign[m] = delta / abs(delta); //pozitív vagy negatív irányú mozgás
+                    sign[m] = delta_s / abs(delta_s); //pozitív vagy negatív irányú mozgás
                     start_pos[m] = motor[m].read();
-                    travel_time[m] = 1000 * abs(delta) / motor_speed[m];
-                    delay_time[m] = travel_time[m] / abs(delta);
+                    travel_time[m] = 1000 * abs(delta_s) / motor_speed[m];
+                    delay_time[m] = travel_time[m] / abs(delta_s);
 
                     if(travel_time[m] > longest_travel_time) longest_travel_time = travel_time[m];
 
                     debug("motor", m + 1);
                     debug("travel t.", travel_time[m]);
-                    debug("delta", delta, true);
+                    debug("delta_s", delta_s, true);
                     debug("sign", sign[m]);
                     debug("delay", delay_time[m], true);
                 }
             }
 
             unsigned long start = millis();
-            int step[6] = {0, 0, 0, 0, 0, 0};
+            int step[6] = {1, 1, 1, 1, 1, 1};
 
-            while(start + longest_travel_time + 500 >= millis())
+            while(start + longest_travel_time + 1000 >= millis())
             {
-                for (int k = 0; k < 6; k++)
+                for (int m = 0; m < c; m++)
                 {
-                    if((millis() >= start + delay_time[k] * step[k]) && enabled[k])
+                    if((millis() >= start + delay_time[m] * step[m]) && enabled[m])
                     {
-                        int pos = start_pos[k] + step[k] * sign[k];
-                        motor[k].write(pos);
-                        if(pos != target[k]) step[k]++;
+                        int pos = start_pos[m] + step[m] * sign[m];
+                        motor[m].write(pos);
+                        if(pos != target[m]) step[m]++;
                     }
                 }
             }
@@ -94,10 +94,10 @@ void loop()
     
         else if(command_is("single"))
         {
-            Serial.println("PARALLEL");
-
+            Serial.println("single");
             selected = Serial.parseInt() - 1;
-            if(selected >= 0 && selected < 6)
+            
+            if(selected >= 0 && selected < c)
             {
                 single_target = Serial.parseInt();
                 motor[selected].write(single_target);
@@ -125,5 +125,8 @@ void debug(String label, int value, bool end_line)
     Serial.print(label);
     Serial.print(": ");
     Serial.print(value);
-    if(end_line) Serial.print('\n'); else Serial.print(", ");
+    if (end_line)
+        Serial.print('\n');
+    else
+        Serial.print(", ");
 }
