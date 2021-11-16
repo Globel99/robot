@@ -1,28 +1,28 @@
 #include <Servo.h>
 
-const int c = 6; //motorok száma
-Servo motor[c];  //Servo osztály tagjainak deklarálása
+//motorok száma
+const int c = 6;
+Servo motor[c];
 
-int delta_s;                 //ekkora utat kell megtennie a motornak a cél eléréshez
-int sign[c];                 //mozgás előjele
-int delay_time[c];           //késleltési idő 2 állapot között
-int start_pos[c];            //kezdő pozíció mozgásnál
-int travel_time[c];          //mozgás megtételéhez szükséges idő
-int longest_travel_time = 0; //leghosszabb ideig tartó mozgás párhuzamos vezérlésnél
-int enabled[c];              //szükséges-e mozognia a motornak
-int target[c];               //a mozgás végpontja párhuzamos vezérlésnél
-int single_target;           //a mozgás végpontja egyszerű vezérlésnél
-int motor_speed[c];          //motor mozgási sebessége
-int selected;                //kiválaszott motor egyszerű vezérlésnél
+int delta_s;
+int sign[c];
+int delay_time[c];
+int start_pos[c];
+int travel_time[c];
+int longest_travel_time = 0;
+int enabled[c];
+int target[c];
+int single_target;
+int motor_speed[c];
+int selected;
 
-int command_is(const char *command);
-void debug(String label, int value, int end_line = 0);
+bool command_is(const char *command);
+void debug(String label, int value, bool end_line = true);
 
 void setup()
 {
     Serial.begin(19200);
 
-    //motorok pinhez rendelése
     motor[0].attach(11);
     motor[1].attach(10);
     motor[2].attach(9);
@@ -37,7 +37,7 @@ void loop()
     {
         if (command_is("parallel"))
         {
-            Serial.println("PARALLEL CONTROL");
+            Serial.println("parallel");
 
             for (int m = 0; m < c; m++)
             {
@@ -46,16 +46,16 @@ void loop()
 
                 debug("motor", m + 1);
                 debug("target", target[m]);
-                debug("speed", motor_speed[m], 1);
+                debug("speed", motor_speed[m], true);
             }
 
-            for (int m = 0; m < 6; m++)
+            for (int m = 0; m < c; m++)
             {
                 delta_s = target[m] - motor[m].read();
                 if (delta_s == 0)
                 {
                     enabled[m] = 0;
-                    debug("disabled motor", m, 1);
+                    debug("disabled motor", m, true);
                 }
                 else
                 {
@@ -71,27 +71,25 @@ void loop()
 
                     debug("motor", m + 1);
                     debug("travel t.", travel_time[m]);
-                    debug("delta_s", delta_s, 1);
+                    debug("delta_s", delta_s, true);
                     debug("sign", sign[m]);
-                    debug("delay", delay_time[m], 1);
+                    debug("delay", delay_time[m], true);
                 }
             }
 
             unsigned long start = millis();
-            int step[6] = {0, 0, 0, 0, 0, 0};
+            int step[6] = {1, 1, 1, 1, 1, 1};
 
-            while (start + longest_travel_time + 500 >= millis())
+            while (start + longest_travel_time + 1000 >= millis())
             {
-                for (int k = 0; k < 6; k++)
+                for (int m = 0; m < c; m++)
                 {
-                    if ((millis() >= start + delay_time[k] * step[k]) && enabled[k])
+                    if ((millis() >= start + delay_time[m] * step[m]) && enabled[m])
                     {
-                        int pos = start_pos[k] + step[k] * sign[k];
-                        motor[k].write(pos);
-                        if (pos != target[k])
-                            step[k]++;
-                        else
-                            enabled[k] = 0;
+                        int pos = start_pos[m] + step[m] * sign[m];
+                        motor[m].write(pos);
+                        if (pos != target[m])
+                            step[m]++;
                     }
                 }
             }
@@ -99,33 +97,33 @@ void loop()
 
         else if (command_is("single"))
         {
-            Serial.println("SINGLE CONTROL");
-
+            Serial.println("single");
             selected = Serial.parseInt() - 1;
-            if (selected >= 0 && selected < 6)
+
+            if (selected >= 0 && selected < c)
             {
                 single_target = Serial.parseInt();
                 motor[selected].write(single_target);
 
                 debug("motor", selected);
-                debug("target", single_target, 1);
+                debug("target", single_target, true);
             }
         }
     }
 }
 
-int command_is(const char *command)
+bool command_is(const char *command)
 {
     char serial_input[10] = "";
     Serial.readBytesUntil('x', serial_input, 10);
 
     if (strcmp(serial_input, command) == 0)
-        return 1;
+        return true;
     else
-        return 0;
+        return false;
 }
 
-void debug(String label, int value, int end_line = 0)
+void debug(String label, int value, bool end_line)
 {
     Serial.print(label);
     Serial.print(": ");
