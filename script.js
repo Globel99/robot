@@ -15,53 +15,50 @@ readValueFull = ""
 
 if ("serial" in window.navigator) {
 
-}else
-{
+} else {
   document.getElementById('error').style.display = 'block'
 }
 
 
 
 setInterval(() => {
-  if(gamepad) {
-    if(buttonsCache === [])
-    {
+  if (gamepad) {
+    if (buttonsCache === []) {
       buttonsCache = window.navigator.getGamepads()[0].buttons
-    }else
-    {
+    } else {
       const buttons = window.navigator.getGamepads()[0].buttons
 
       buttons.forEach((button, index) => {
-        if(button.value > 0) console.log(index)
+        if (button.value > 0) console.log(index)
       })
 
-      buttonsCache = buttons 
+      buttonsCache = buttons
     }
   }
 }, 100)
 
 
 
-async function connect(){
+async function connect() {
   await selectPort()
 }
 
 async function selectPort() {
-    port = await navigator.serial.requestPort();
-    await port.open({ baudRate: baudRate });
+  port = await navigator.serial.requestPort();
+  await port.open({ baudRate: baudRate });
 
-    setConnectedState()
+  setConnectedState()
 
-    const encoder = new TextEncoderStream();
-    outputDone = encoder.readable.pipeTo(port.writable);
-    console.log(outputDone)
-    outputStream = encoder.writable;
-    writer = outputStream.getWriter();
+  const encoder = new TextEncoderStream();
+  outputDone = encoder.readable.pipeTo(port.writable);
+  console.log(outputDone)
+  outputStream = encoder.writable;
+  writer = outputStream.getWriter();
 
-    port.readable.pipeTo(inputTextDecoder.writable)
-    reader = inputTextDecoder.readable.getReader()
+  port.readable.pipeTo(inputTextDecoder.writable)
+  reader = inputTextDecoder.readable.getReader()
 
-    setInterval(readLoop, 100)
+  setInterval(readLoop, 100)
 }
 
 function onRangeChange(motor, event) {
@@ -90,7 +87,7 @@ async function closeSend(message) {
   updateConsole('outputConsole', message)
 }
 
-window.addEventListener("gamepadconnected", function(e) {
+window.addEventListener("gamepadconnected", function (e) {
   console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
     e.gamepad.index, e.gamepad.id,
     e.gamepad.buttons.length, e.gamepad.axes.length);
@@ -99,30 +96,29 @@ window.addEventListener("gamepadconnected", function(e) {
   gamepad = e.gamepad
 
   document.getElementById('controller-overlay').style.display = 'block'
-}); 
+});
 
-async function readLoop () {
+async function readLoop() {
   const { value, done } = await reader.read();
   if (done) {
-      reader.releaseLock();
+    reader.releaseLock();
   }
 
-  readValueFull += value 
+  readValueFull += value
 
-  if(value[value.length - 1] === '\n')
-  {
-      console.log(readValueFull)
-      updateConsole("inputConsole", readValueFull)
-      readValueFull = ""
+  if (value[value.length - 1] === '\n') {
+    console.log(readValueFull)
+    updateConsole("inputConsole", readValueFull)
+    readValueFull = ""
   }
 }
 
 function updateConsole(consoleId, value) {
   const console = document.getElementById(consoleId)
-  
-  if(console.innerText.length > 1000) console.innerText = console.innerText.slice(800);
+
+  if (console.innerText.length > 1000) console.innerText = console.innerText.slice(800);
   console.innerText += value
-  if(consoleId == "outputConsole") console.innerHTML += '<br>'
+  if (consoleId == "outputConsole") console.innerHTML += '<br>'
 }
 
 function clearConsole(consoleId) {
@@ -135,7 +131,7 @@ function sendManualInput() {
   sendString(message)
 }
 
-function sendParallelInputs(){
+function sendParallelInputs() {
   const motors = document.getElementById('parallelInputs').querySelectorAll('div')
 
   sendString('parallel')
