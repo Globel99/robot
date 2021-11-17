@@ -20,7 +20,7 @@ button {
   border: none;
   border-radius: 8px;
 
-  transition: color 2s;
+  transition: background-color 0.1s;
 }
 
 button:hover {
@@ -30,8 +30,34 @@ button:hover {
 button:disabled {
   cursor: no-drop;
 }
+#singleControl, #parallelControl {
+  margin-top: 24px;
+  height: 450px;
+}
+
+#parallelControl > div{
+  border: 1px solid lightgray;
+  border-radius: 16px;
+  width: min-content;
+  margin: auto;
+  padding: 0 36px;
+  background-color: dodgerblue;
+  color: white;
+}
+
+#parallelControl div div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#parallelControl *{
+  margin: 4px;
+  font-weight: bold;
+}
 
 #singleControl div {
+  height: 60px;
   display: flex;
   align-items: center;
   border: 1px solid lightgray;
@@ -50,6 +76,26 @@ button:disabled {
   margin-left: auto;
   margin-right: auto;
   width: 60%;
+}
+#parallelControl input {
+  font-weight: normal;
+  width: 100px;
+  font-size: 24px;
+  text-align: center;
+}
+
+#parallelControl div div div {
+  width: 100px;
+  text-align: center;
+  align-items: center;
+}
+
+.parallel-start{
+  background-color: white;
+  color: dodgerblue;
+}
+.parallel-start:hover{
+  color: white;
 }
 
 footer {

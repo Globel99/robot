@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +9,7 @@
     <link rel="icon" type="image/png" href="./icon.png">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="flex-center button-container" id="buttonContainer">
         <button id="connectButton" onclick="connect()">KAPCSOLÓDÁS AZ USB PORTRA</button>
@@ -21,7 +23,7 @@
         </div>
         <div class="flex-center">
             <button onclick="setSingleControlScreen()" id="singleSwitch" disabled>Kézi</button>
-            
+
             <button onclick="setParallelControlScreen()" id="parallelSwitch">Párhuzamos</button>
         </div>
     </div>
@@ -29,68 +31,89 @@
     <div id="singleControl">
         <div>
             <label>Motor 1</label>
-            <input name="motor1" id="motor1" type="range" min="30" max="150" oninput="onAngleChange(1, event.target.value)">
+            <input name="motor1" id="motor1" type="range" min="30" max="150"
+                oninput="onAngleChange(1, event.target.value)">
             <label class="angle-label">90</label>
         </div>
 
         <div>
             <label for="motor2">Motor 2</label>
-            <input name="motor2" id="motor2" type="range" min="30" max="150" disabled oninput="onAngleChange(2, event.target.value)">
+            <input name="motor2" id="motor2" type="range" min="30" max="150" disabled
+                oninput="onAngleChange(2, event.target.value)">
             <label class="angle-label">90</label>
         </div>
 
         <div>
             <label for="motor3">Motor 3</label>
-            <input name="motor3" id="motor3" type="range" min="30" max="150" disabled oninput="onAngleChange(3, event.target.value)">
+            <input name="motor3" id="motor3" type="range" min="30" max="150" disabled
+                oninput="onAngleChange(3, event.target.value)">
             <label class="angle-label">90</label>
         </div>
 
         <div>
             <label for="motor4">Motor 4</label>
-            <input name="motor4" id="motor4" type="range" min="30" max="150" disabled oninput="onAngleChange(4, event.target.value)">
+            <input name="motor4" id="motor4" type="range" min="30" max="150" disabled
+                oninput="onAngleChange(4, event.target.value)">
             <label class="angle-label">90</label>
         </div>
 
         <div>
             <label for="motor5">Motor 5</label>
-            <input name="motor5" id="motor5" type="range" min="30" max="150" disabled oninput="onAngleChange(5, event.target.value)">
+            <input name="motor5" id="motor5" type="range" min="30" max="150" disabled
+                oninput="onAngleChange(5, event.target.value)">
             <label class="angle-label">90</label>
         </div>
 
         <div>
             <label for="motor6">Motor 6</label>
-            <input name="motor6" id="motor6" type="range"  min="30" max="150" disabled oninput="onAngleChange(6, event.target.value)">
+            <input name="motor6" id="motor6" type="range" min="30" max="150" disabled
+                oninput="onAngleChange(6, event.target.value)">
             <label class="angle-label">90</label>
         </div>
     </div>
 
-    <div id="parallelControl" style="display: none;">
+    <div id="parallelControl" hidden>
         <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
+            <div class="header">
+                <div></div>
+                <div>Cél</div>
+                <div>Sebesség</div>
+            </div>
+            <div>
+                <div>Motor 1</div>
+                <input type="number" min="30" max="150" value="90">
+                <input type="number" min="1" max="30" value="15">
+            </div>
+            <div>
+                <div>Motor 2</div>
+                <input type="number" min="30" max="150" value="90">
+                <input type="number" min="1" max="30" value="15">
+            </div>
+            <div>
+                <div>Motor 3</div>
+                <input type="number" min="30" max="150" value="90">
+                <input type="number" min="1" max="30" value="15">
+            </div>
+            <div>
+                <div>Motor 4</div>
+                <input type="number" min="30" max="150" value="90">
+                <input type="number" min="1" max="30" value="15">
+            </div>
+            <div>
+                <div>Motor 5</div>
+                <input type="number" min="30" max="150" value="90">
+                <input type="number" min="1" max="30" value="15">
+            </div>
+            <div>
+                <div>Motor 6</div>
+                <input type="number" min="30" max="150" value="90">
+                <input type="number" min="1" max="30" value="15">
+            </div>
+            <div>
+                <button class="parallel-start" onclick="startParallelControl()">Start</button>
+            </div>
         </div>
 
-        <button onclick="startParallelControl()">Start</button>
     </div>
 
     <div class="consoles">
@@ -129,7 +152,7 @@
             Az Ön Böngészőjét nem támogatja az alkalmazás
 
             Váltson másik Böngészőre!
-            
+
             Támogatott Böngészők:
             Google Chrome
             Safari
@@ -145,4 +168,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
