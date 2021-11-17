@@ -13,111 +13,126 @@
         <button id="connectButton" onclick="connect()">KAPCSOLÓDÁS AZ USB PORTRA</button>
     </div>
 
-    <div class="inputs">
-        <div>
-            <label for="motor1">1</label>
-            <input name="motor1" id="motor1" type="range" min="30" max="150" disabled oninput="onRangeChange(1, event)">
+    <div class="control-type">
+        <div class="flex-center">
+            <div class="large-font">
+                Vezérlés típusa
+            </div>
         </div>
-
-        <div>
-            <label for="motor2">2</label>
-            <input name="motor2" id="motor2" type="range" min="30" max="150" disabled oninput="onRangeChange(2, event)">
-        </div>
-
-        <div>
-            <label for="motor3">3</label>
-            <input name="motor3" id="motor3" type="range" min="30" max="150" disabled oninput="onRangeChange(3, event)">
-        </div>
-
-        <div>
-            <label for="motor4">4</label>
-            <input name="motor4" id="motor4" type="range" min="30" max="150" disabled oninput="onRangeChange(4, event)">
-        </div>
-
-        <div>
-            <label for="motor5">5</label>
-            <input name="motor5" id="motor5" type="range" min="30" max="150" disabled oninput="onRangeChange(5, event)">
-        </div>
-
-        <div>
-            <label for="motor6">6</label>
-            <input name="motor6" id="motor6" type="range"  min="30" max="150" disabled oninput="onRangeChange(6, event)">
+        <div class="flex-center">
+            <button onclick="setSingleControlScreen()" id="singleSwitch" disabled>Kézi</button>
+            
+            <button onclick="setParallelControlScreen()" id="parallelSwitch">Párhuzamos</button>
         </div>
     </div>
 
-    <div>
-        <input type="text" id="inputField">
-        <button onclick="sendManualInput()">send</button>
+    <div id="singleControl">
+        <div>
+            <label>Motor 1</label>
+            <input name="motor1" id="motor1" type="range" min="30" max="150" oninput="onAngleChange(1, event.target.value)">
+            <label class="angle-label">90</label>
+        </div>
+
+        <div>
+            <label for="motor2">Motor 2</label>
+            <input name="motor2" id="motor2" type="range" min="30" max="150" disabled oninput="onAngleChange(2, event.target.value)">
+            <label class="angle-label">90</label>
+        </div>
+
+        <div>
+            <label for="motor3">Motor 3</label>
+            <input name="motor3" id="motor3" type="range" min="30" max="150" disabled oninput="onAngleChange(3, event.target.value)">
+            <label class="angle-label">90</label>
+        </div>
+
+        <div>
+            <label for="motor4">Motor 4</label>
+            <input name="motor4" id="motor4" type="range" min="30" max="150" disabled oninput="onAngleChange(4, event.target.value)">
+            <label class="angle-label">90</label>
+        </div>
+
+        <div>
+            <label for="motor5">Motor 5</label>
+            <input name="motor5" id="motor5" type="range" min="30" max="150" disabled oninput="onAngleChange(5, event.target.value)">
+            <label class="angle-label">90</label>
+        </div>
+
+        <div>
+            <label for="motor6">Motor 6</label>
+            <input name="motor6" id="motor6" type="range"  min="30" max="150" disabled oninput="onAngleChange(6, event.target.value)">
+            <label class="angle-label">90</label>
+        </div>
+    </div>
+
+    <div id="parallelControl" style="display: none;">
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+        <div>
+            <input type="number" min="30" max="150">
+            <input type="number">
+        </div>
+
+        <button onclick="startParallelControl()">Start</button>
     </div>
 
     <div class="consoles">
         <div class="console-container">
-            <div class="console-title">
-                Output (PC -> Microcontroller)
-                <button onclick="clearConsole('outputConsole')">Törlés</button>
+            <div class="console-header">
+                <div class="console-name">
+                    Output Console
+                </div>
+                <div class="direction">
+                    <div>PC</div>
+                    <img src="./arrow.png" class="rotate-right">
+                    <div>MCU</div>
+                </div>
             </div>
             <div class="console" id="outputConsole"></div>
+            <button onclick="clearConsole('outputConsole')">Törlés</button>
         </div>
         <div class="console-container">
-            <div class="console-title">
-                Input (PC <- Microcontroller)
-                <button onclick="clearConsole('inputConsole')">Törlés</button>
+            <div class="console-header">
+                <div class="console-name">
+                    Input Console
+                </div>
+                <div class="direction">
+                    <div>PC</div>
+                    <img src="./arrow.png" class="rotate-left">
+                    <div>MCU</div>
+                </div>
             </div>
             <div class="console" id="inputConsole"></div>
-        </div>
-    </div>
-
-    <div id="parallelInputs">
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-        <div>
-            <input type="number" min="30" max="150">
-            <input type="number">
-        </div>
-
-        <button onclick="sendParallelInputs()">Párhuzamos vezérlés indítás</button>
-    </div>
-
-    <div class="controller-overlay" id="controller-overlay">
-        <div class="overlay-message-container">
-            <div>
-                KONTROLLER CSATLAKOZTATVA
-            </div>
-            <img src='./gamepad-svg.svg'>
+            <button onclick="clearConsole('inputConsole')">Törlés</button>
         </div>
     </div>
 
     <div class="error" id="error">
         <p>
-            Az Ön Böngészője nem támogatja a WEB Serial API-t
-            <br>
+            Az Ön Böngészőjét nem támogatja az alkalmazás
+
             Váltson másik Böngészőre!
-            <br>
-            <br>
+            
             Támogatott Böngészők:
-            <br>
             Google Chrome
-            <br>
             Safari
-            <br>
             Opera
         </p>
     </div>

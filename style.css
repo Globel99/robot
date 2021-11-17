@@ -1,181 +1,179 @@
-html{
-    font-family: sans-serif;
-} 
-
-body{
-    margin: 40px;
-    margin-bottom: 80px;
+html {
+  font-family: sans-serif;
 }
 
-input[type="range"]{
-    width: 50%;
+body {
+  margin: 40px;
+  margin-bottom: 80px;
 }
 
-button{
-    cursor: pointer;
-    background-color: dodgerblue;
-    color: white;
-    font-size: large;
-    padding: 18px;
-    border: none;
-    border-radius: 8px;
-
-    transition: color 2s;
+input[type='range'] {
+  width: 50%;
 }
 
-button:hover{
-    background-color: rgb(14, 100, 185);
+button {
+  cursor: pointer;
+  background-color: dodgerblue;
+  color: white;
+  font-size: large;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+
+  transition: color 2s;
 }
 
-button:disabled{
-    cursor: no-drop;
+button:hover {
+  background-color: rgb(14, 100, 185);
 }
 
-.button-container{
-    height: 200px;
-    transition: height 2s;
+button:disabled {
+  cursor: no-drop;
 }
 
-.inputs div{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid lightgray;
+#singleControl div {
+  display: flex;
+  align-items: center;
+  border: 1px solid lightgray;
 }
 
-.inputs div label,
-.inputs div input {
-    margin: 20px;
+#singleControl label,
+#singleControl input {
+  margin: 20px;
 }
 
-.inputs div label{
-    margin-bottom: 0;
+#singleControl label {
+  width: 100px;
+  font-weight: bolder;
+}
+#singleControl input {
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
 }
 
-.controller-overlay {
-    display: none;
-
-    color: white;
-    position: absolute;
-    top:50%;
-    left:50%;
-    z-index: 1000;
-    width: 40%;
-    height: 30%;
-    margin-left: -20%;
-    margin-top: -15%;
-    font-weight: bolder;
-    font-size: xx-large;
-
-    background-color: rgba(30, 144, 255, 1);
-    border-radius: 24px;
-
-    animation: fadeOut 2s ease-in;
-    animation-delay: 2s;
-    animation-fill-mode: forwards;
+footer {
+  height: 5%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(200, 200, 200);
+  color: rgba(150, 150, 150, 0.9);
+  font-weight: 700;
+  width: 100%;
+  text-align: center;
 }
 
-.overlay-message-container{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
+img {
+  max-height: 20px;
+  height: auto;
+  width: auto;
+  margin: 0 8px;
 }
 
-.overlay-message-container img{
-    margin-top: 20px;
-    height: 50%;
+.error {
+  display: none;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  z-index: 100;
+  background: white;
+
+  width: 100%;
+  height: 100%;
+
+  text-align: center;
 }
 
-@keyframes fadeOut {
-    from {
-        background-color: rgba(30, 144, 255, 1);
-        border-radius: 24px;
-        opacity: 1;
-    }
-    to {
-        background-color: rgba(30, 144, 255, 0);
-        border-radius: 24px;
-        opacity: 0;
-        display: none;
-        z-index: -1;
-    }
-  }
-
-footer{
-    height: 5%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(200, 200, 200);
-    color: rgba(150, 150, 150, 0.9);
-    font-weight: 700;
-    width: 100%;
-    text-align: center;
+.error p {
+  margin-top: 20%;
+  font-size: 24px;
+  white-space: pre;
 }
 
-.error{
-    display: none;
-
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    z-index: 100;
-    background: white;
-
-    width: 100%;
-    height: 100%;
-
-    text-align: center;
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.error p{
-    margin-top: 20%;
-    font-size: 24px;
+.large-font {
+  font-size: large;
 }
 
-.flex-center{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.control-type * {
+  margin: 4px;
 }
 
-.consoles{
-    width: 100%;
-    margin-top: 50px;
-    height: 200px;
-    justify-content: space-around;
+.control-type button {
+  width: 150px;
+}
+
+.consoles {
+  width: 100%;
+  margin-top: 18px;
+  height: 400px;
+  justify-content: space-around;
 }
 
 .consoles,
-.console-container{
-    display: flex;
+.console-container {
+  display: flex;
 }
 
-.console-container{
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 40%;
-    flex-direction: column;
+.console-container {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 40%;
+  flex-direction: column;
 }
 
-.console{
-    margin-top: 12px;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    color: white;
-    padding: 12px;
+.console {
+  margin-top: 12px;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  color: white;
+  padding: 12px;
 
-    display: flex;
-    overflow: scroll;
-    flex-direction: column-reverse;
+  display: flex;
+  overflow-y: scroll;
+  flex-direction: column-reverse;
 }
 
-.console-title{
-    font-size: large;
+.console-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: large;
+  text-align: center;
+  align-items: center;
+}
+
+.console-name {
+  font-weight: bolder;
+}
+
+.direction {
+  display: flex;
+  flex-direction: row;
+}
+
+.rotate-right {
+  transform: rotate(270deg);
+}
+
+.rotate-left {
+  transform: rotate(90deg);
+}
+
+.console-container button {
+  margin-top: 8px;
+}
+
+button:disabled {
+  background-color: darkblue;
 }
