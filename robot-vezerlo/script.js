@@ -83,14 +83,19 @@ function sendManualInput() {
 }
 
 function getParalellControlParameters() {
+  const parameters = [];
   const motors = document
-    .getElementById('parallelInputs')
-    .querySelectorAll('div');
+    .getElementById('parallelControl')
+    .querySelectorAll('.inputs');
 
-  return motors.map((motor) => ({
-    angle: motor.querySelectorAll('input')[0].value,
-    travelTime: motor.querySelectorAll('input')[1].value,
-  }));
+  motors.forEach((motor) => {
+    parameters.push({
+      angle: motor.querySelectorAll('input')[0].value,
+      travelTime: motor.querySelectorAll('input')[1].value,
+    });
+  });
+
+  return parameters;
 }
 
 function startParallelControl() {
@@ -123,7 +128,7 @@ function setConnectedState() {
 }
 
 function setAngleLabel(motor, value) {
-  document.getElementsByClassName()[motor - 1].innerHTML = value;
+  document.getElementsByClassName('angle-label')[motor - 1].innerHTML = value;
 }
 
 function setSingleControlScreen() {
